@@ -38,7 +38,7 @@ function Get-FFMpeg_Video_Bitrate($totalBitrate) {
 }
 
 function Compress-Video($directory, $output_directory) {
-  Param ($directory, $output_directory)
+  # Param ($directory, $output_directory)
 
   $files = Get-ChildItem -Include @("*.mp4", "*.avi", "*.divx", "*.mov", "*.mpg", "*.wmv", "*.mkv", "*.flv", "*.m3u8") -Path $directory -Recurse; # -Recurse
 
