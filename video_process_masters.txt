@@ -1,0 +1,32 @@
+ffmpeg -i Edit-1.mp4 -filter:v "crop=1500:580:220:280" crop.mp4
+
+ffmpeg -i 'Pausing with a much smaller sleep step 0.2 secs.mp4' -filter:v "crop=1500:580:220:280" 'Pausing with a much smaller sleep step 0.2 secs CROPPED.mp4'
+ffmpeg -i 'Pausing with no sleep step.mp4' -filter:v "crop=1500:580:220:280" 'Pausing with no sleep step CROPPED.mp4'
+ffmpeg -i 'Pausing with a sleep step 1 sec times 2.mp4' -filter:v "crop=1500:580:220:280" 'Pausing with a sleep step 1 sec times 2 CROPPED.mp4'
+ffmpeg -i 'Time based Sin Model.mp4' -filter:v "crop=1500:580:220:280" 'Time based Sin Model CROPPED.mp4'
+
+https://superuser.com/questions/138331/using-ffmpeg-to-cut-up-video
+You can use the -ss option to specify a start timestamp, and the -t option to specify the encoding duration. The timestamps need to be in HH:MM:SS.xxx format or in seconds (s.msec).
+
+The following would clip the first 30 seconds, and then clip everything that is 10 seconds after that:
+
+ffmpeg -ss 00:00:30.0 -i input.wmv -c copy -t 00:00:10.0 output.wmv
+ffmpeg -ss 30 -i input.wmv -c copy -t 10 output.wmv
+Note that -t is an output option and always needs to be specified after -i.
+
+Some tips:
+
+For older ffmpeg versions, if you use -ss after -i, you get more accurate seeking at the expense of a slower execution altogether. See also: Seeking with FFmpeg
+You can use -to instead of -t to specify the timestamp to which you want to cut. So, instead of -i <input> -ss 30 -t 10 you could also do -i <input> -ss 30 -to 40 to achieve the same thing.
+
+If your ffmpeg does not support -c, or -to, it is likely very outdated. Compile a new version yourself or download a static build from their homepage. It's really not complicated.
+
+
+ffmpeg.exe -i '.\carla sin instruction control.mp4' -filter:v "crop=1600:680:220:280" crop.mp4
+
+ffmpeg.exe -i '.\carla sin instruction control.mp4' -filter:v "crop=1400:680:220:280" -ss 00:00:13.0 -t 51 '.\carla sin instruction control cropped.mp4'
+
+ffmpeg.exe -i '.\carla models.mp4' -ss 00:00:14.0 -filter:v "crop=1400:680:220:280" '.\carla models cropped.mp4'
+
+ffmpeg.exe -i '.\Carla pygame.mp4' -ss 00:00:7.0 -filter:v "crop=1400:680:220:280" '.\Carla pygame cropped.mp4'
+ffmpeg.exe -i '.\carla weather.mp4' -ss 00:00:7.0 -filter:v "crop=1400:680:220:280" '.\carla weather cropped.mp4'
