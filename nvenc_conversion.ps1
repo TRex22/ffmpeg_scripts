@@ -37,21 +37,23 @@ function Get-FFMpeg_Video_Bitrate($totalBitrate) {
   return 0
 }
 
-function Compress-Video() {
+function Compress-Video($directory, $output_directory) {
   Param ($directory, $output_directory)
 
   $files = Get-ChildItem -Include @("*.mp4", "*.avi", "*.divx", "*.mov", "*.mpg", "*.wmv", "*.mkv", "*.flv", "*.m3u8") -Path $directory -Recurse; # -Recurse
 
   foreach ($f in $files){
-    $outfile = $output_directory + $f.Name
+    $outfile = $output_directory + '\' + $f.Name
     $bitrate = Get-TotalBitrate($f)
     $bitrateStr = Get-FFMpeg_Video_Bitrate($bitrate)
 
     if ($bitrateString -ne 0) {
       ffmpeg -hwaccel cuda -hwaccel_output_format cuda -i $f -c:v hevc_nvenc -crf 15 -b:v $bitrateStr $outfile
 
-      $finalfile = Get-ChildItem $outfile
+      $finalfile = Get-ChildItem -LiteralPath $outfile
       $finalfile.CreationTime = $f.CreationTime
+      $finalfile.LastWriteTime = $f.LastWriteTime
+      $finalfile.LastAccessTime = $f.LastAccessTime
 
       if ($finalfile.Length -gt $f.Length) {
         echo 'Too Big!'
@@ -63,4 +65,4 @@ function Compress-Video() {
 
 $directory = "$pwd"
 $output_directory = "$pwd"
-Compress-Video($directory)
+Compress-Video($directory, $output_directory)
