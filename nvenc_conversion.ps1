@@ -47,7 +47,7 @@ function Compress-Video($directory, $output_directory) {
     $bitrate = Get-TotalBitrate($f)
     $bitrateStr = Get-FFMpeg_Video_Bitrate($bitrate)
 
-    if ($bitrateString -ne 0) {
+    if ($bitrateString -ne 0 -And $f.length -gt 100MB) {
       ffmpeg -hwaccel cuda -hwaccel_output_format cuda -i $f -c:v hevc_nvenc -crf 15 -b:v $bitrateStr $outfile
 
       $finalfile = Get-ChildItem -LiteralPath $outfile
@@ -67,3 +67,6 @@ function Compress-Video($directory, $output_directory) {
 $directory = "$pwd"
 $output_directory = "$pwd"
 Compress-Video($directory, $output_directory)
+
+
+$directory = "Z:\server_share\tmp\New folder\win8prev\Best"
