@@ -57,7 +57,8 @@ function Compress-Video($directory, $output_directory) {
 
       if ($finalfile.Length -gt $f.Length) {
         echo 'Too Big!'
-        rm $outfile
+        # rm $outfile
+        Remove-Item -LiteralPath $outfile
       }
     }
   }
