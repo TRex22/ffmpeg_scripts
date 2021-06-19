@@ -43,11 +43,13 @@ function Compress-Video($directory, $output_directory) {
   $files = Get-ChildItem -Include @("*.mp4", "*.avi", "*.divx", "*.mov", "*.mpg", "*.wmv", "*.mkv", "*.flv", "*.m3u8") -Path $directory -Recurse; # -Recurse
 
   foreach ($f in $files){
-    $outfile = $output_directory + '\' + $f.Name
+    $outfile = 'G:\tmp\win8\converted' + '\' + $f.Name #$output_directory + '\' + $f.Name
     $bitrate = Get-TotalBitrate($f)
     $bitrateStr = Get-FFMpeg_Video_Bitrate($bitrate)
 
-    if ($bitrateString -ne 0 -And $f.length -gt 100MB) {
+    echo $bitrate
+
+    if ($bitrateString -ne 0 -And $f.length -gt 300MB -And $bitrate -gt 900) {
       ffmpeg -hwaccel cuda -hwaccel_output_format cuda -i $f -c:v hevc_nvenc -crf 15 -b:v $bitrateStr $outfile
 
       $finalfile = Get-ChildItem -LiteralPath $outfile
